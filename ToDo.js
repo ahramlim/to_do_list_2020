@@ -1,22 +1,20 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  TextInput
 } from "react-native";
 import PropTypes from "prop-types";
+
 const { width, height } = Dimensions.get("window");
 
-export default class ToDo extends React.Component {
+export default class ToDo extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isEditing: false,
-      toDoValue: props.text
-    };
+    this.state = { isEditing: false, toDoValue: props.text };
   }
   static propTypes = {
     text: PropTypes.string.isRequired,
@@ -52,8 +50,8 @@ export default class ToDo extends React.Component {
               multiline={true}
               onChangeText={this._controllInput}
               returnKeyType={"done"}
-              blurOnSubmit={true}
               onBlur={this._finishEditing}
+              underlineColorAndroid={"transparent"}
             />
           ) : (
             <Text
@@ -66,6 +64,7 @@ export default class ToDo extends React.Component {
             </Text>
           )}
         </View>
+
         {isEditing ? (
           <View style={styles.actions}>
             <TouchableOpacity onPressOut={this._finishEditing}>
@@ -107,23 +106,17 @@ export default class ToDo extends React.Component {
   };
   _startEditing = event => {
     event.stopPropagation();
-    this.setState({
-      isEditing: true
-    });
+    this.setState({ isEditing: true });
   };
   _finishEditing = event => {
     event.stopPropagation();
     const { toDoValue } = this.state;
     const { id, updateToDo } = this.props;
     updateToDo(id, toDoValue);
-    this.setState({
-      isEditing: false
-    });
+    this.setState({ isEditing: false });
   };
   _controllInput = text => {
-    this.setState({
-      toDoValue: text
-    });
+    this.setState({ toDoValue: text });
   };
 }
 
@@ -135,11 +128,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between"
-  },
-  column: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: width / 2
   },
   circle: {
     width: 30,
@@ -165,6 +153,11 @@ const styles = StyleSheet.create({
   },
   uncompletedText: {
     color: "#353839"
+  },
+  column: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: width / 2
   },
   actions: {
     flexDirection: "row"
